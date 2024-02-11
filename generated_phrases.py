@@ -1,5 +1,30 @@
-undisplayed_phrases = ['let go', 'hold out for', 'fall for', 'build up', 'take back', 'bring in', 'show up', 'take off for', 'cut down on', 'participate in', 'take out for', 'cut down', 'look after', 'break up', 'go through with', 'break up into', 'get away', 'look up', 'pass over', 'hold off', 'call up', 'put away', 'fall apart', 'turn out to be', 'go back', 'put off by', 'put through', 'get out of', 'bring off', 'go out with', 'take in', 'bring up to', 'turn up', 'get along with', 'pick up', 'turn away', 'show off', 'break down', 'come up against', 'take on', 'call for', 'set back on', 'turn in', 'settle for', 'break out', 'wake up', 'look forward to', 'put off', 'go along with', 'keep away from', 'bring up', 'come across', 'put up with', 'call on', 'bring over', 'wear out', 'hang on', 'give up', 'put up against', 'go over with', 'give in', 'work up to', 'go on', 'set out', 'fall back on', 'sort out', 'hand in', 'settle down', 'lay off', 'cut off', 'cut out', 'catch up', 'show up to', 'pick out', 'work out', 'go through', 'point out', 'fall through', 'take up with', 'let down', 'put on', 'take after', 'get by', 'go for', 'take out', 'look into', 'wait on', 'give away', 'lay out', 'come up with', 'pick up after', 'take over from', 'take over', 'turn around', 'drop by', 'hold back', 'pay off', 'wait up for', 'hold up', 'go after', 'call off for', 'show up for', 'get on with', 'count on', 'get ahead', 'check out', 'cut in', 'bring about', 'carry on', 'go over', 'carry out', 'get over', 'figure out', 'show around', 'call off', 'look down on', 'turn into', 'run into with', 'put up to', 'put through to', 'carry on with', 'keep on', 'wake up to', 'take off', 'break in', 'turn down', 'come back', 'work out for', 'get off', 'take away', 'put out', 'pick up from', 'come around', 'set back', 'end up', 'end up with', 'turn out', 'run over', 'wait for', 'pass up', 'wear off', 'deal with', 'lay off of', 'run into', 'hold on to', 'pull through', 'come over', 'cut off from', 'fall behind', 'pay back', 'settle up', 'set up for', 'take up', 'break up with', 'come up to', 'take down', 'pull off', 'run out of', 'put back', 'pass by', 'show off for', 'pass away']
-
-selected_phrases = ['set up', 'take down to']
-
-unselected_phrases = ['hang out', 'hold on', 'look back on']
+undisplayed_phrases = [
+    'take off', 'participate in', 'wear off', 'come up with', 'go through', 'set up', 'get along with',
+    'run out of', 'look forward to', 'give up', 'turn out', 'put off', 'work out', 'show up',
+    'carry out', 'break down', 'put up with', 'keep up with', 'bring up', 'check out',
+    'count on', 'call off', 'cut down on', 'come across', 'deal with', 'figure out', 'look into',
+    'pick up', 'point out', 'run into', 'show off', 'sort out', 'take up', 'turn up',
+    'break up', 'call for', 'catch up', 'cut off', 'drop by', 'fall apart', 'get by',
+    'give in', 'hang out', 'hold on', 'let down', 'pass away', 'put on', 'put out',
+    'settle down', 'show around', 'take after', 'take over', 'turn down', 'wake up',
+    'bring about', 'build up', 'come over', 'cut out', 'end up', 'fall behind', 'get over',
+    'go over', 'hand in', 'hold off', 'let go', 'look up', 'pass out', 'pull through',
+    'put back', 'put through', 'set back', 'show up for', 'take back', 'take down', 'turn in',
+    'break in', 'bring up to', 'carry on', 'come up to', 'get ahead', 'give away', 'go on',
+    'keep on', 'look after', 'pass by', 'pick out', 'pull off', 'put away', 'set out',
+    'show off for', 'take on', 'take out', 'turn into', 'wait on', 'break up with', 'bring in',
+    'bring up at', 'call on', 'come up against', 'end up with', 'get away', 'go along with',
+    'go back', 'hang on', 'hold up', 'lay off', 'look down on', 'pay off', 'pick up on',
+    'put up to', 'run over', 'settle for', 'take away', 'take in', 'turn around',
+    'wear out', 'break out', 'call up', 'come down with', 'cut down', 'fall for', 'get off',
+    'go for', 'go through with', 'hold back', 'lay off of', 'live up to', 'pass up',
+    'pick up after', 'put off by', 'put up with', 'settle up', 'take off for', 'take up with',
+    'turn out to be', 'wake up to', 'work up to', 'carry on with', 'come up with',
+    'cut off from', 'fall through', 'get on with', 'go after', 'go over with', 'hold on to',
+    'keep away from', 'lay out', 'look back on', 'pass over', 'pick up from', 'put through to',
+    'set up for', 'show up in', 'take down to', 'take over from', 'wait for', 'break up into',
+    'bring off', 'bring over', 'call off for', 'come back', 'cut in', 'fall back on',
+    'get out of', 'go out with', 'hold out for', 'leave out', 'look forward to', 'pay back',
+    'pick up on', 'put up against', 'run into with', 'set back on', 'show up to', 'take out for',
+    'take up after', 'turn away', 'wait up for', 'work out for', 'come around',
+]
