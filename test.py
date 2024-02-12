@@ -14,14 +14,11 @@ class PhraseRecallTrainer(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.selected_phrases_current_session = set()
-        self.undisplayed_phrases = []
-        self.selected_phrases = []
-        self.unselected_phrases = []
-###################
-        #######################
-        ######################
-        #this needs to be changed since it won't initialise an empty select and unselect list
+        # self.selected_phrases_current_session = set()
+        # self.undisplayed_phrases = []
+        # self.selected_phrases = []
+        # self.unselected_phrases = []
+
         
         self.undisplayed_phrases = undisplayed_phrases_global
         self.selected_phrases = selected_phrases_global
@@ -62,7 +59,7 @@ class PhraseRecallTrainer(QWidget):
 
     def slider_value_changed(self):
         self.number_of_new_words = self.slider.value()
-        self.slider_label.setText(f'Number of New Words to Display: {self.number_of_new_words}')
+        self.slider_label.setText(f'Number of New Phrases to Display: {self.number_of_new_words}')
 
     def generate_phrases(self):
         # Calculate the number of phrases needed from each source
@@ -104,21 +101,21 @@ class PhraseRecallTrainer(QWidget):
         
 
     def generate_python_file(self):
-        self.selected_phrases_current_session = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
-        
+        selected_phrases_output = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
+        selected_phrases_global.extend(list(selected_phrases_output))
         # Generate Python file
-        
-        unselected_phrases = list(set(self.displayed_phrases) - self.selected_phrases_current_session)
-        
+        print(self.displayed_phrases, selected_phrases_output)
+        unselected_phrases_output = list(set(self.displayed_phrases) - set(selected_phrases_output))
+        unselected_phrases_global.extend(unselected_phrases_output)
         # Create a new variable containing undisplayed phrases excluding displayed phrases
         undisplayed_phrases_output = list(set(undisplayed_phrases_global) - set(self.displayed_phrases))
-        print(undisplayed_phrases_output)
-        unselected_phrases = unselected_phrases_global.append(unselected_phrases)
+        #print(undisplayed_phrases_output)
+        
         selected_phrases = selected_phrases_global
         with open('generated_phrases.py', 'w') as file:
             file.write(f'undisplayed_phrases = {undisplayed_phrases_output}\n\n')
-            # file.write(f'selected_phrases = {list(self.selected_phrases_current_session)}\n\n')
-            # file.write(f'unselected_phrases = {unselected_phrases}\n')
+            file.write(f'selected_phrases = {list(selected_phrases_output)}\n\n')
+            file.write(f'unselected_phrases = {list(unselected_phrases_output)}\n')
 
         print('Python file generated: generated_phrases.py')
 
