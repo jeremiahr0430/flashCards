@@ -112,12 +112,13 @@ class PhraseRecallTrainer(QWidget):
         
         # Create a new variable containing undisplayed phrases excluding displayed phrases
         undisplayed_phrases_output = list(set(undisplayed_phrases_global) - set(self.displayed_phrases))
+        print(undisplayed_phrases_output)
         unselected_phrases = unselected_phrases_global.append(unselected_phrases)
         selected_phrases = selected_phrases_global
         with open('generated_phrases.py', 'w') as file:
             file.write(f'undisplayed_phrases = {undisplayed_phrases_output}\n\n')
-            file.write(f'selected_phrases = {list(self.selected_phrases_current_session)}\n\n')
-            file.write(f'unselected_phrases = {unselected_phrases}\n')
+            # file.write(f'selected_phrases = {list(self.selected_phrases_current_session)}\n\n')
+            # file.write(f'unselected_phrases = {unselected_phrases}\n')
 
         print('Python file generated: generated_phrases.py')
 
