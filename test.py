@@ -98,7 +98,9 @@ class PhraseRecallTrainer(QWidget):
         # Show the Test Finished button below displayed phrases
         displayed_phrases_layout.addWidget(self.test_finished_button)
         self.test_finished_button.show()
-        
+            # Update self.selected_phrases and self.unselected_phrases based on checkbox state
+        self.selected_phrases = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
+        self.unselected_phrases = list(set(self.displayed_phrases) - set(self.selected_phrases))
         
 
     def generate_python_file(self):
