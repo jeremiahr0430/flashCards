@@ -1,6 +1,6 @@
 import sys
 import random
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QSlider
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QSlider, QStackedLayout
 from PyQt5.QtCore import Qt
 undisplayed_phrases_global = []
 selected_phrases_global = []
@@ -14,12 +14,7 @@ class PhraseRecallTrainer(QWidget):
     def __init__(self):
         super().__init__()
 
-        # self.selected_phrases_current_session = set()
-        # self.undisplayed_phrases = []
-        # self.selected_phrases = []
-        # self.unselected_phrases = []
-
-        
+      
         self.undisplayed_phrases = undisplayed_phrases_global
         self.selected_phrases = selected_phrases_global
         self.unselected_phrases = unselected_phrases_global
@@ -27,10 +22,16 @@ class PhraseRecallTrainer(QWidget):
         
         self.displayed_phrases = []
         self.number_of_new_words = 0
+        
+        self.stacked_layout = QStackedLayout()
 
         self.init_ui()
+        self.show_initial_view()
 
     def init_ui(self):
+ 
+
+
         self.slider_label = QLabel('Number of New Words to Display: 0', self)
         self.slider = QSlider(Qt.Horizontal, self)
         self.slider.setRange(0, 5)
@@ -47,15 +48,33 @@ class PhraseRecallTrainer(QWidget):
 
         self.checkbox_list = []
         self.displayed_phrases_widget = QWidget(self)
+        self.get_ready_label = QLabel('Get Ready For Another Test?', self)
+        
+        self.get_ready_label.hide()
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.slider_label)
         layout.addWidget(self.slider)
         layout.addWidget(self.generate_button)
         layout.addWidget(self.displayed_phrases_widget)
+        layout.addWidget(self.test_finished_button)
+        layout.addWidget(self.get_ready_label)
+
+        self.stacked_layout.addWidget(self)
+        self.stacked_layout.addWidget(self.get_ready_label)
 
         self.setGeometry(300, 300, 400, 200)
         self.setWindowTitle('Phrase Recall Trainer')
+
+
+
+
+    def show_initial_view(self):
+        self.stacked_layout.setCurrentIndex(0)
+
+    def show_test_finished_view(self):
+        self.stacked_layout.setCurrentIndex(1)
+        # You may add additional logic here if needed        
 
     def slider_value_changed(self):
         self.number_of_new_words = self.slider.value()
@@ -98,13 +117,20 @@ class PhraseRecallTrainer(QWidget):
         # Update self.selected_phrases and self.unselected_phrases based on checkbox state
         self.selected_phrases = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
         self.unselected_phrases = list(set(self.displayed_phrases) - set(self.selected_phrases))
+
+
+                # Once the phrases are generated, show the "Test Finished" button
+        self.test_finished_button.show()
+
+        # Show the initial view again
+        self.show_initial_view()
         
 
     def generate_python_file(self):
         selected_phrases_output = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
         selected_phrases_global.extend(list(selected_phrases_output))
         # Generate Python file
-        print(self.displayed_phrases, selected_phrases_output)
+        #print(self.displayed_phrases, selected_phrases_output)
         unselected_phrases_output = list(set(self.displayed_phrases) - set(selected_phrases_output))
         unselected_phrases_global.extend(unselected_phrases_output)
         # Create a new variable containing undisplayed phrases excluding displayed phrases
@@ -118,6 +144,16 @@ class PhraseRecallTrainer(QWidget):
             file.write(f'unselected_phrases = {list(unselected_phrases_output)}\n')
 
         print('Python file generated: generated_phrases.py')
+
+        # Hide the phrases, checkboxes, and "Test Finished" button
+        self.displayed_phrases_widget.hide()
+        self.test_finished_button.hide()
+
+        # Show the "Get Ready For Another Test?" label
+        self.get_ready_label.show()
+    
+
+
 
 
 if __name__ == '__main__':
