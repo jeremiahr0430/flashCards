@@ -1,1 +1,0 @@
-git checkout 0658ed908921f67fbabe35c7d6f7f228e222c10b generated_phrases.py
