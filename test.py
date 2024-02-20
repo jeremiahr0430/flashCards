@@ -1,6 +1,6 @@
 import sys
 import random
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QSlider, QStackedLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QSlider
 from PyQt5.QtCore import Qt
 undisplayed_phrases_global = []
 selected_phrases_global = []
@@ -31,11 +31,6 @@ class PhraseRecallTrainer(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        #create two main widget working as two pages
-        self.widget1 = QWidget()
-        self.widget2 = QWidget()
-
-        #create elements for the 1st page (widget)
         self.slider_label = QLabel('Number of New Words to Display: 0', self)
         self.slider = QSlider(Qt.Horizontal, self)
         self.slider.setRange(0, 5)
@@ -46,52 +41,21 @@ class PhraseRecallTrainer(QWidget):
         self.generate_button = QPushButton('Generate Phrases', self)
         self.generate_button.clicked.connect(self.generate_phrases)
 
-        #create elements for the 2nd page (widget)
-        self.checkbox_list = []
-        self.displayed_phrases_widget = QWidget(self)
-
         self.test_finished_button = QPushButton('Test Finished', self)
         self.test_finished_button.clicked.connect(self.generate_python_file)
         self.test_finished_button.hide()
 
-        layout1 = QVBoxLayout(self.widget1)
-        layout1.addWidget(self.slider_label)
-        layout1.addWidget(self.slider)
-        layout1.addWidget(self.generate_button)
+        self.checkbox_list = []
+        self.displayed_phrases_widget = QWidget(self)
 
-        layout2 = QVBoxLayout(self.widget2)
-        layout2.addWidget(self.displayed_phrases_widget)
-        layout2.addWidget(self.test_finished_button)
-
-        # Create stacked layout and add widgets
-        self.stacked_layout = QStackedLayout()
-        self.stacked_layout.addWidget(self.widget1)
-        self.stacked_layout.addWidget(self.widget2)
-
-        # Set the stacked layout as the main layout for the window
-        self.setLayout(self.stacked_layout)
-
-        # Connect buttons to switch widgets
-        
-        self.generate_button.clicked.connect(lambda: self.stacked_layout.setCurrentIndex(1))
-        self.test_finished_button.clicked.connect(lambda: self.stacked_layout.setCurrentIndex(0))
-
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.slider_label)
+        layout.addWidget(self.slider)
+        layout.addWidget(self.generate_button)
+        layout.addWidget(self.displayed_phrases_widget)
 
         self.setGeometry(300, 300, 400, 200)
         self.setWindowTitle('Phrase Recall Trainer')
-    
-    # def setup_widget(self, widget, label_text, button_text):
-    #     # Create label and button
-    #     label = QLabel(label_text)
-    #     button = QPushButton(button_text)
-
-    #     # Create layout and add widgets
-    #     layout = QVBoxLayout(widget)
-    #     layout.addWidget(label)
-    #     layout.addWidget(button)
-
-    #     # Set an object name for the button (to find it later)
-    #     button.setObjectName("button")
 
     def slider_value_changed(self):
         self.number_of_new_words = self.slider.value()
