@@ -14,12 +14,6 @@ class PhraseRecallTrainer(QWidget):
     def __init__(self):
         super().__init__()
 
-        # self.selected_phrases_current_session = set()
-        # self.undisplayed_phrases = []
-        # self.selected_phrases = []
-        # self.unselected_phrases = []
-
-        
         self.undisplayed_phrases = undisplayed_phrases_global
         self.selected_phrases = selected_phrases_global
         self.unselected_phrases = unselected_phrases_global
@@ -63,6 +57,7 @@ class PhraseRecallTrainer(QWidget):
         layout2.addWidget(self.displayed_phrases_widget)
         layout2.addWidget(self.test_finished_button)
 
+
         # Create stacked layout and add widgets
         self.stacked_layout = QStackedLayout()
         self.stacked_layout.addWidget(self.widget1)
@@ -80,18 +75,6 @@ class PhraseRecallTrainer(QWidget):
         self.setGeometry(300, 300, 400, 200)
         self.setWindowTitle('Phrase Recall Trainer')
     
-    # def setup_widget(self, widget, label_text, button_text):
-    #     # Create label and button
-    #     label = QLabel(label_text)
-    #     button = QPushButton(button_text)
-
-    #     # Create layout and add widgets
-    #     layout = QVBoxLayout(widget)
-    #     layout.addWidget(label)
-    #     layout.addWidget(button)
-
-    #     # Set an object name for the button (to find it later)
-    #     button.setObjectName("button")
 
     def slider_value_changed(self):
         self.number_of_new_words = self.slider.value()
@@ -111,7 +94,7 @@ class PhraseRecallTrainer(QWidget):
         # Randomly select phrases from each source
         undisplayed_phrases = random.sample(self.undisplayed_phrases, undisplayed_count)
         unselected_phrases = random.sample(self.unselected_phrases, unselected_count)
-        selected_phrases = random.sample(self.selected_phrases, selected_count)
+        selected_phrases = random.sample(list(self.selected_phrases), selected_count)
 
         # Combine the selected phrases
         self.displayed_phrases = undisplayed_phrases + unselected_phrases + selected_phrases
@@ -123,7 +106,13 @@ class PhraseRecallTrainer(QWidget):
         # Display new phrases
         self.checkbox_list = [QCheckBox(phrase) for phrase in self.displayed_phrases]
 
-        displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
+        # Check if layout is already set
+        if not self.displayed_phrases_widget.layout():
+            displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
+        else:
+            displayed_phrases_layout = self.displayed_phrases_widget.layout()
+        
+        #displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
         for checkbox in self.checkbox_list:
             checkbox.setChecked(False)  # Ensure checkboxes for new phrases are unchecked
             displayed_phrases_layout.addWidget(checkbox)  # Add checkbox to the displayed phrases widget
