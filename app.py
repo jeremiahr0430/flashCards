@@ -12,11 +12,11 @@ except ImportError:
     pass
 class PhraseRecallTrainer(QWidget):
     def __init__(self):
-        super().__init__()
+        super().__init__()  
 
-        self.undisplayed_phrases = undisplayed_phrases_global
-        self.selected_phrases = selected_phrases_global
-        self.unselected_phrases = unselected_phrases_global
+        self.undisplayed_phrases = self.undisplayed_phrases_global = undisplayed_phrases_global
+        self.selected_phrases = self.selected_phrases_global = selected_phrases_global
+        self.unselected_phrases = self.unselected_phrases_global = unselected_phrases_global
 
         
         self.displayed_phrases = []
@@ -127,13 +127,24 @@ class PhraseRecallTrainer(QWidget):
 
     def generate_python_file(self):
         selected_phrases_output = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
-        selected_phrases_global.extend(list(selected_phrases_output))
+        print(f'global before is {self.selected_phrases_global}')
+        ##update self.selected_phrases_global for multiple test
+        selected_phrases_output = list(selected_phrases_output) + list(self.selected_phrases_global)
+        self.selected_phrases_global = selected_phrases_output
+        print(f'global after is {self.selected_phrases_global}',f'selected_phrases_output after is {selected_phrases_output}')
+        
+
         # Generate Python file
-        print(self.displayed_phrases, selected_phrases_output)
+        #print(self.displayed_phrases, selected_phrases_output)
+        
+        ##update self.unselected_phrases_global for multiple test
         unselected_phrases_output = list(set(self.displayed_phrases) - set(selected_phrases_output))
-        unselected_phrases_global.extend(unselected_phrases_output)
+        unselected_phrases_output.extend(self.unselected_phrases_global)
+        self.unselected_phrases_global = unselected_phrases_output
+
         # Create a new variable containing undisplayed phrases excluding displayed phrases
-        undisplayed_phrases_output = list(set(undisplayed_phrases_global) - set(self.displayed_phrases))
+        undisplayed_phrases_output = list(set(self.undisplayed_phrases_global) - set(self.displayed_phrases))
+        self.undisplayed_phrases_global = undisplayed_phrases_output
         #print(undisplayed_phrases_output)
         
         selected_phrases = selected_phrases_global
