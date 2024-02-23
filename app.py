@@ -17,8 +17,8 @@ class PhraseRecallTrainer(QWidget):
         self.undisplayed_phrases = self.undisplayed_phrases_global = undisplayed_phrases_global
         self.selected_phrases = self.selected_phrases_global = selected_phrases_global
         self.unselected_phrases = self.unselected_phrases_global = unselected_phrases_global
-        self.unselected_count_msg = 'initial test'
-        self.selected_count_msg = 'initial test2'
+        # self.unselected_count_msg = 'initial test'
+        # self.selected_count_msg = 'initial test2'
         
         self.displayed_phrases = []
         self.number_of_new_words = 0
@@ -44,8 +44,8 @@ class PhraseRecallTrainer(QWidget):
         #create elements for the 2nd page (widget)
         self.checkbox_list = [QCheckBox('') for c in range(5)]
         
-        # self.msgLabel1 = QLabel(self.unselected_count_msg,self.widget2)
-        # self.msgLabel2 = QLabel(self.selected_count_msg,self.widget2)
+        self.msgLabel1 = QLabel('',self.widget2)
+        self.msgLabel2 = QLabel('',self.widget2)
         self.displayed_phrases_widget = QWidget(self.widget2)
 
         self.test_finished_button = QPushButton('Test Finished', self.widget2)
@@ -64,8 +64,8 @@ class PhraseRecallTrainer(QWidget):
         for checkbox in self.checkbox_list:
             checkbox.setChecked(False)  # Ensure checkboxes for new phrases are unchecked
             displayed_phrases_layout.addWidget(checkbox) #not adding checkbox in yet
-        # layout2.addWidget(self.msgLabel1)
-        # layout2.addWidget(self.msgLabel2)
+        self.layout2.addWidget(self.msgLabel1)
+        self.layout2.addWidget(self.msgLabel2)
         self.layout2.addWidget(self.test_finished_button)
 
 
@@ -83,7 +83,7 @@ class PhraseRecallTrainer(QWidget):
         self.test_finished_button.clicked.connect(lambda: self.stacked_layout.setCurrentIndex(0))
 
 
-        self.setGeometry(300, 300, 400, 600)
+        self.setGeometry(300, 300, 400, 300)
         self.setWindowTitle('Phrase Recall Trainer')
     
 
@@ -97,10 +97,10 @@ class PhraseRecallTrainer(QWidget):
         undisplayed_count = min(slider_value, len(self.undisplayed_phrases_global))
         #if phrases from undisplayed group are less than 5
         unselected_count = min(5 - slider_value, len(self.unselected_phrases_global))
-        self.unselected_count_msg = f'There are {unselected_count} phrases that you have marked as recognised below'
+        unselected_count_msg = f'Previously checked phrases : {unselected_count}'
         #if phrases from unselected group are less than 5
         selected_count = min(5 - slider_value - unselected_count, len(self.selected_phrases))
-        self.selected_count_msg = f'There are {selected_count} phrases that you have been showed below'
+        selected_count_msg = f'Previously seen phrases :       {selected_count}'
         # Calculate the extra count needed to make it 5 phrases
         extra = 5 - (undisplayed_count + unselected_count + selected_count)
         undisplayed_count += extra
@@ -113,35 +113,12 @@ class PhraseRecallTrainer(QWidget):
         # Combine the selected phrases
         self.displayed_phrases = undisplayed_phrases + unselected_phrases + selected_phrases
 
-        # Clear previous checkboxes
-        # for checkbox in self.checkbox_list:
-        #     checkbox.setParent(None)
-
-        # Display new phrases
-        #self.checkbox_list = [QCheckBox(phrase) for phrase in self.displayed_phrases]
-
-        # # Check if layout is already set
-        # if not self.displayed_phrases_widget.layout():
-        #     displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
-        # else:
-        #     displayed_phrases_layout = self.displayed_phrases_widget.layout()
-        
-        #displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
-        #displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
         for count, checkbox in enumerate(self.checkbox_list):
             checkbox.setChecked(False)  # Ensure checkboxes for new phrases are unchecked
             checkbox.setText(self.displayed_phrases[count])
             #displayed_phrases_layout.addWidget(checkbox)  # Add checkbox to the displayed phrases widget
-
-##############!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
-
-    #Need to set text for each check box. text should from the self.displayed_phrases
-############!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
-        # Show the Test Finished button below displayed phrases
-        # displayed_phrases_layout.addWidget(self.test_finished_button)
-        # self.test_finished_button.show()
-        # Update self.selected_phrases and self.unselected_phrases based on checkbox state
+        self.msgLabel1.setText(selected_count_msg)
+        self.msgLabel2.setText(unselected_count_msg)
         self.selected_phrases = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
         self.unselected_phrases = list(set(self.displayed_phrases) - set(self.selected_phrases))
         
