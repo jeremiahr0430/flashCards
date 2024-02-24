@@ -2,6 +2,8 @@ import sys
 import random
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QSlider, QStackedLayout
 from PyQt5.QtCore import Qt
+# This is to ensure that there will be an empty list 
+#if import failed ( initially, there's no list for selected and unselected)
 undisplayed_phrases_global = []
 selected_phrases_global = []
 unselected_phrases_global = []
@@ -17,8 +19,6 @@ class PhraseRecallTrainer(QWidget):
         self.undisplayed_phrases = self.undisplayed_phrases_global = undisplayed_phrases_global
         self.selected_phrases = self.selected_phrases_global = selected_phrases_global
         self.unselected_phrases = self.unselected_phrases_global = unselected_phrases_global
-        # self.unselected_count_msg = 'initial test'
-        # self.selected_count_msg = 'initial test2'
         
         self.displayed_phrases = []
         self.number_of_new_words = 0
@@ -57,16 +57,18 @@ class PhraseRecallTrainer(QWidget):
         layout1.addWidget(self.slider)
         layout1.addWidget(self.generate_button)
 
-        self.layout2 = QVBoxLayout(self.widget2)
-        
-        self.layout2.addWidget(self.displayed_phrases_widget) 
+        # use self cuz it could be updated later
+        layout2 = QVBoxLayout(self.widget2)
+        layout2.addWidget(self.displayed_phrases_widget) 
         displayed_phrases_layout = QVBoxLayout(self.displayed_phrases_widget)
+        
         for checkbox in self.checkbox_list:
             checkbox.setChecked(False)  # Ensure checkboxes for new phrases are unchecked
             displayed_phrases_layout.addWidget(checkbox) #not adding checkbox in yet
-        self.layout2.addWidget(self.msgLabel1)
-        self.layout2.addWidget(self.msgLabel2)
-        self.layout2.addWidget(self.test_finished_button)
+
+        layout2.addWidget(self.msgLabel1)
+        layout2.addWidget(self.msgLabel2)
+        layout2.addWidget(self.test_finished_button)
 
 
         # Create stacked layout and add widgets
@@ -97,10 +99,8 @@ class PhraseRecallTrainer(QWidget):
         undisplayed_count = min(slider_value, len(self.undisplayed_phrases_global))
         #if phrases from undisplayed group are less than 5
         unselected_count = min(5 - slider_value, len(self.unselected_phrases_global))
-        unselected_count_msg = f'Previously checked phrases : {unselected_count}'
         #if phrases from unselected group are less than 5
         selected_count = min(5 - slider_value - unselected_count, len(self.selected_phrases))
-        selected_count_msg = f'Previously seen phrases :       {selected_count}'
         # Calculate the extra count needed to make it 5 phrases
         extra = 5 - (undisplayed_count + unselected_count + selected_count)
         undisplayed_count += extra
@@ -109,32 +109,28 @@ class PhraseRecallTrainer(QWidget):
         undisplayed_phrases = random.sample(self.undisplayed_phrases, undisplayed_count)
         unselected_phrases = random.sample(self.unselected_phrases, unselected_count)
         selected_phrases = random.sample(list(self.selected_phrases), selected_count)
-
         # Combine the selected phrases
         self.displayed_phrases = undisplayed_phrases + unselected_phrases + selected_phrases
-
+        #update checkbox lable text
         for count, checkbox in enumerate(self.checkbox_list):
             checkbox.setChecked(False)  # Ensure checkboxes for new phrases are unchecked
             checkbox.setText(self.displayed_phrases[count])
-            #displayed_phrases_layout.addWidget(checkbox)  # Add checkbox to the displayed phrases widget
+        #create msg for self.msgLabel1 to update.
+        unselected_count_msg = f'Previously checked phrases : {unselected_count}'
+        selected_count_msg = f'Previously seen phrases :       {selected_count}'
         self.msgLabel1.setText(selected_count_msg)
         self.msgLabel2.setText(unselected_count_msg)
+
         self.selected_phrases = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
         self.unselected_phrases = list(set(self.displayed_phrases) - set(self.selected_phrases))
         
 
     def generate_python_file(self):
         selected_phrases_output = {checkbox.text() for checkbox in self.checkbox_list if checkbox.isChecked()}
-        print(f'global before is {self.selected_phrases_global}')
         ##update self.selected_phrases_global for multiple test
         selected_phrases_output = list(selected_phrases_output) + list(self.selected_phrases_global)
         self.selected_phrases_global = selected_phrases_output
         print(f'global after is {self.selected_phrases_global}',f'selected_phrases_output after is {selected_phrases_output}')
-        
-
-        # Generate Python file
-        #print(self.displayed_phrases, selected_phrases_output)
-        
         ##update self.unselected_phrases_global for multiple test
         unselected_phrases_output = list(set(self.displayed_phrases) - set(selected_phrases_output))
         unselected_phrases_output.extend(self.unselected_phrases_global)
